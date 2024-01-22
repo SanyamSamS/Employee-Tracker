@@ -1,3 +1,4 @@
+require('dotenv').config();
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 
@@ -79,10 +80,28 @@ function viewDepartments() {
 }
 
 // Function to view all roles
-
+function viewRoles() {
+    db.query(
+      'SELECT * FROM role',
+      (err, roles) => {
+        if (err) throw err;
+        console.table(roles);
+        startApp();
+      }
+    );
+  }
 
 // Function to view all employees
-
+function viewEmployees() {
+    db.query(
+      'SELECT * FROM employees',
+      (err, roles) => {
+        if (err) throw err;
+        console.table(employees);
+        startApp();
+      }
+    );
+  }
 
 // Function to add a department
 
