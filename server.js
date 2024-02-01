@@ -61,8 +61,7 @@ function startApp() {
                     break;
 
                 case 'Exit':
-                    connection.end();
-                    console.log('Exiting the application.');
+                    exitApp();
                     break;
 
                 default:
@@ -104,15 +103,145 @@ function viewEmployees() {
   }
 
 // Function to add a department
-
+function addDepartment() {
+    inquirer
+        .prompt({
+            name: 'department',
+            type: 'input',
+            message: 'What is the name of the department?',
+        })
+        .then((answer) => {
+            db.query(
+                'INSERT INTO department SET ?',
+                {
+                    name: answer.department,
+                },
+                (err) => {
+                    if (err) throw err;
+                    console.log('Department added successfully!');
+                    startApp();
+                }
+            );
+        });
+}
 
 // Function to add a role
-
+function addRole() {
+    inquirer
+        .prompt([
+            {
+                name: 'title',
+                type: 'input',
+                message: 'What is the title of the role?',
+            },
+            {
+                name: 'salary',
+                type: 'input',
+                message: 'What is the salary of the role?',
+            },
+            {
+                name: 'department_id',
+                type: 'input',
+                message: 'What is the department ID of the role?',
+            },
+        ])
+        .then((answer) => {
+            db.query(
+                'INSERT INTO role SET ?',
+                {
+                    title: answer.title,
+                    salary: answer.salary,
+                    department_id: answer.department_id,
+                },
+                (err) => {
+                    if (err) throw err;
+                    console.log('Role added successfully!');
+                    startApp();
+                }
+            );
+        });
+}
 
 // Function to add an employee
-
+function addEmployee() {
+    inquirer
+        .prompt([
+            {
+                name: 'first_name',
+                type: 'input',
+                message: 'What is the first name of the employee?',
+            },
+            {
+                name: 'last_name',
+                type: 'input',
+                message: 'What is the last name of the employee?',
+            },
+            {
+                name: 'role_id',
+                type: 'input',
+                message: 'What is the role ID of the employee?',
+            },
+            {
+                name: 'manager_id',
+                type: 'input',
+                message: 'What is the manager ID of the employee?',
+            },
+        ])
+        .then((answer) => {
+            db.query(
+                'INSERT INTO employees SET ?',
+                {
+                    first_name: answer.first_name,
+                    last_name: answer.last_name,
+                    role_id: answer.role_id,
+                    manager_id: answer.manager_id,
+                },
+                (err) => {
+                    if (err) throw err;
+                    console.log('Employee added successfully!');
+                    startApp();
+                }
+            );
+        });
+}
 
 // Function to update an employee role
-
+function updateEmployeeRole() {
+    inquirer
+        .prompt([
+            {
+                name: 'employee_id',
+                type: 'input',
+                message: 'What is the ID of the employee?',
+            },
+            {
+                name: 'role_id',
+                type: 'input',
+                message: 'What is the new role ID of the employee?',
+            },
+        ])
+        .then((answer) => {
+            db.query(
+                'UPDATE employees SET ? WHERE ?',
+                [
+                    {
+                        role_id: answer.role_id,
+                    },
+                    {
+                        id: answer.employee_id,
+                    },
+                ],
+                (err) => {
+                    if (err) throw err;
+                    console.log('Employee role updated successfully!');
+                    startApp();
+                }
+            );
+        });
+}
 
 // Function to exit the application
+function exitApp() {
+    console.log('Goodbye!');
+    process.exit();
+}
