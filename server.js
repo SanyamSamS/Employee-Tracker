@@ -22,7 +22,7 @@ function startApp() {
         choices: [
             'View all departments',
             'View all roles',
-            'View all employees',
+            'View all employee',
             'Add a department',
             'Add a role',
             'Add an employee',
@@ -40,7 +40,7 @@ function startApp() {
                     viewRoles();
                     break;
 
-                case 'View all employees':
+                case 'View all employee':
                     viewEmployees();
                     break;
 
@@ -93,10 +93,10 @@ function viewRoles() {
 // Function to view all employees
 function viewEmployees() {
     db.query(
-      'SELECT * FROM employees',
-      (err, roles) => {
+      'SELECT * FROM employee',
+      (err, employee) => {
         if (err) throw err;
-        console.table(employees);
+        console.table(employee);
         startApp();
       }
     );
@@ -189,12 +189,12 @@ function addEmployee() {
         ])
         .then((answer) => {
             db.query(
-                'INSERT INTO employees SET ?',
+                'INSERT INTO employee SET ?',
                 {
                     first_name: answer.first_name,
                     last_name: answer.last_name,
                     role_id: answer.role_id,
-                    manager_id: answer.manager_id,
+                    manager_id: answer.manager_id || null,
                 },
                 (err) => {
                     if (err) throw err;
@@ -222,7 +222,7 @@ function updateEmployeeRole() {
         ])
         .then((answer) => {
             db.query(
-                'UPDATE employees SET ? WHERE ?',
+                'UPDATE employee SET ? WHERE ?',
                 [
                     {
                         role_id: answer.role_id,
@@ -245,3 +245,5 @@ function exitApp() {
     console.log('Goodbye!');
     process.exit();
 }
+
+startApp();
